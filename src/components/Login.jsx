@@ -10,7 +10,7 @@ function Login() {
    
      <Nav/>
       <div className="container">
-        <div className="card">
+        <div className="card-login">
           <div className="icon">📦</div>
 
           <h1>Welcome Back</h1>

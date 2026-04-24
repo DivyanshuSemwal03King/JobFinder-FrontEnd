@@ -1,57 +1,145 @@
-import profile from "../assets/profile.jpeg";
-import jobIcon from '../assets/jobIcon.png';
-import search from '../assets/search.png';
+import React, { useState } from "react";
+import Nav from "./ui/Nav";
+import Footer from "./ui/Footer";
+import { useNavigate } from "react-router-dom";
+
+
 function JobSeeker() {
+    const [activeTab, setActiveTab] = useState("applied");
+    const navigate = useNavigate();
+
+
+    const appliedJobs = [
+        {
+            id: 1,
+            title: "Frontend Developer",
+            company: "TechCorp Inc.",
+            location: "San Francisco, CA",
+            type: "Full-time",
+            time: "Applied 2 days ago",
+            salary: "$80k - $120k/year",
+        },
+
+        {
+            id: 3,
+            title: "UX Designer",
+            company: "DesignHub",
+            location: "New York, NY",
+            type: "Full-time",
+            time: "Applied 1 week ago",
+            salary: "$70k - $100k/year",
+        },
+        {
+            id: 4,
+            title: "Product Manager",
+            company: "Innovate Labs",
+            location: "Seattle, WA",
+            type: "Full-time",
+            salary: "$100k - $150k/year",
+        },
+    ];
+
+    const savedJobs = [
+        {
+            title: "Backend Engineer",
+            company: "DataFlow",
+            location: "Austin, TX",
+            type: "Remote",
+            time: "3 days ago",
+            salary: "$90k - $140k/year",
+        },
+        {
+            title: "Product Manager",
+            company: "Innovate Labs",
+            location: "Seattle, WA",
+            type: "Full-time",
+            time: "1 day ago",
+            salary: "$100k - $150k/year",
+        },
+    ];
+
+    const countApplied = appliedJobs.length;
+    const countSaved = savedJobs.length;
+
+    const jobs = activeTab === "applied" ? appliedJobs : savedJobs;
+
     return (
         <>
-            <div className="jobseeker-div">
-                <div className="jobseeker-content">
-                    <div className="jobseeker-head">
-                        <div className="jobseeker-profile">
-                            <div className="profile">
-                                <div className="profile-pic">
-                                    <img src={profile} alt="Profile Picture" />
-                                </div>
-                                <div className="profile-info">
-                                    <h2>John Doe</h2>
-                                    <p>Experienced Driver</p>
-                                    <p>Preamnagar Deheradun</p>
-                                </div>
+            <Nav />
+            <div className="jobseeker">
 
-
-                            </div>
-                          
-                        </div>
-                          <div className="jobseeker-browse">
-                                <button className="browse-btn">Browse Jobs</button>
-                                <button className="back-btn">Back</button>
-
-                            </div>
-                    </div>
-                    <div className="jobseeker-actives">
-                        <div className="Applied-jobs">
-                            <div className="applied-img"><img src={jobIcon} alt="job Icon" /></div>
-                            <div className="applied-details"><p>current jobs 2</p>
-                                <p>Applied Jobs</p></div>
-                        </div>
-                        <div className="saved-jobs">
-                            <div className="saved-img"><img src={search} alt="Saved Icon" /></div>
-                            <div className="saved-details"><p>saved jobs 2</p>
-                                <p>Saved Jobs</p></div>
+                {/* PROFILE */}
+                <div className="profile-card">
+                    <div className="profile-left">
+                        <div className="avatar"></div>
+                        <div>
+                            <h2>John Doe</h2>
+                            <p>Frontend Developer</p>
+                            <span>San Francisco, CA</span>
                         </div>
                     </div>
-                    <div className="jobseeker-applied">
-                        <div className="swap-sections">
-                            <button className="jobseeker-applied-jobs-btn">Applied Jobs</button>
-                            <button className="jobseeker-saved-jobs-btn">Saved Jobs</button>
-                        </div>
-                        <div className="jobseeker-view-section">
 
-                        </div>
+                    <button className="browse-btn">Browse Jobs</button>
+                </div>
+
+                {/* STATS */}
+                <div className="stats">
+                    <div className="card">
+                        <h3>{countApplied}</h3>
+                        <p>Applied Jobs</p>
+                    </div>
+                    <div className="card">
+                        <h3>{countSaved}</h3>
+                        <p>Saved Jobs</p>
+                    </div>
+                    <div className="card">
+                        <h3>0</h3>
+                        <p>Interviews</p>
                     </div>
                 </div>
+
+                {/* TABS */}
+                <div className="tabs">
+                    <button
+                        className={activeTab === "applied" ? "tab active" : "tab"}
+                        onClick={() => setActiveTab("applied")}
+                    >
+                        Applied Jobs {(countApplied)}
+                    </button>
+
+                    <button
+                        className={activeTab === "saved" ? "tab active" : "tab"}
+                        onClick={() => setActiveTab("saved")}
+                    >
+                        Saved Jobs {(countSaved)}
+                    </button>
+                </div>
+
+                {/* JOB LIST */}
+                <div className="jobs" >
+                    {jobs.map((job) => (
+                        <div
+                            key={job.id}
+                            className="job-card"
+                            onClick={() => navigate(`/job/${job.id}`)}
+                        >
+                            <h3>{job.title}</h3>
+                            <p className="company">{job.company}</p>
+
+                            <div className="meta">
+                                <span>{job.location}</span>
+                                <span>{job.type}</span>
+                                <span>{job.time || "2 days ago"}</span>
+                            </div>
+
+                            <div className="salary">{job.salary}</div>
+                        </div>
+                    ))}
+                </div>
             </div>
+            <Footer />
         </>
     );
 }
-export default JobSeeker; 
+
+export default JobSeeker;
